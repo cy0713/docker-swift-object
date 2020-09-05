@@ -2,7 +2,7 @@
 
 This is a docker file that creates an OpenStack swift object, container, and account server image. 
 At this point you must have already started a proxy server using following:
-https://github.com/chalianwar/docker-swift-proxy
+https://github.com/cy0713/docker-swift-proxy
 
 
 You can specify the object server workers and storage device at run time. Furthermore, you can
@@ -21,7 +21,7 @@ object server, account server, container server, etc..
 
 
 ```bash
-[root@amaranth3 ~]# docker run -d -e SWIFT_OWORKERS=8 -e SWIFT_DEVICE=sdb1 -e SWIFT_SCP_COPY=root@192.168.0.171:~/files:kevin -p 6010:6010 -p 6011:6011 -p 6012:6012 --privileged -t alivt/swift-object
+chloe@host:# docker run -d -e SWIFT_OWORKERS=8 -e SWIFT_DEVICE=loop2 -e SWIFT_SCP_COPY=root@192.168.3.68:~/docker-swift-proxy/files:654321 -p 8010:6010 -p 8011:6011 -p 8012:6012 --privileged -t swift-object
 ```
 
 Over here, we mapped ports on host. In case you are launching multiple containers you need to choose different ports. Please note that you have to use the same ports that you mentioned when you launch proxy server as
@@ -37,15 +37,15 @@ the correct device which has enough disk space. Using incorrect device can be ca
 SWIFT_OWORKERS is used to set the object workers dynamically.
 
 The ring files created at the proxy server needs to be copied to the object servers as well. SWIFT_SCP_COPY
-contains the remote location path from where ring files can be copied. root@192.168.0.171:~/files is the remote path, whereas kevin is the `scp password`.
+contains the remote location path from where ring files can be copied. root@192.168.3.68:~/docker-swift-proxy/files is the remote path, whereas 654321 is the `scp password`.
 
 At this point OpenStack Swift object server is running.
 
 
 ```bash
 hulk0@host1:~$ docker ps
-CONTAINER ID        IMAGE                                     COMMAND                CREATED             STATUS              PORTS                     NAMES
-54810e6f88e8        alivt/swift-object   "/bin/sh -c /usr/loc   13 minutes ago      Up 13 minutes       0.0.0.0:6010-6012->6010-6012/tcp   jovial_tesla
+CONTAINER ID        IMAGE                            COMMAND                CREATED             STATUS              PORTS                              NAMES
+54810e6f88e8        swift-object                     "/bin/sh -c /usr/loc   13 minutes ago      Up 13 minutes       0.0.0.0:6010-6012->6010-6012/tcp   jovial_tesla
 ```
 
 We need to launch as many containers as we specified at the time of launching proxy server. Once you are done with
