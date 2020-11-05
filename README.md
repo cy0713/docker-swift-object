@@ -19,6 +19,30 @@ object server, account server, container server, etc..
 
 ## Usage
 
+首先需要在storage node上面为swift-disk分配一块地方，目前采用跟saio的步骤一样
+
+1. 为回环设备创建文件
+```bash
+$ sudo mkdir -p /srv
+$ sudo truncate -s 1GB /srv/swift-disk
+$ sudo mkfs.xfs /srv/swift-disk
+```
+
+2. 编辑/etc/fstab并添加
+
+```bash
+$ /srv/swift-disk /mnt/sdb1 xfs loop,noatime 0 0
+```
+
+3. 创建swift数据挂载点
+
+```bash
+$ sudo mkdir /mnt/sdb1
+$ sudo mount -a
+```
+
+4. 用```df -h```查看创建的回环设备，假设为 /dev/loop2，那么STORAGE DEVICE 就是 loop2
+
 
 ```bash
 chloe@host:# docker run -d -e SWIFT_OWORKERS=8 -e SWIFT_DEVICE=loop2 -e SWIFT_SCP_COPY=root@192.168.3.68:~/docker-swift-proxy/files:654321 -p 8010:6010 -p 8011:6011 -p 8012:6012 --privileged -t swift-object
