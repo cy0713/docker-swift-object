@@ -1,3 +1,23 @@
+#Install Docker
+
+```
+$ curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+```
+Usually, add the user into group to avoid using 'sudo'
+
+```
+$ sudo usermod -aG docker dexx
+```
+
+
+#Build image
+
+```
+$ docker build -t <name> .  //.表示Dockerfile在当前目录下
+```
+
+
+
 #Docker OpenStack Swift Object, Container, Account Server
 
 This is a docker file that creates an OpenStack swift object, container, and account server image. 
